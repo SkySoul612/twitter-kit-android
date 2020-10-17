@@ -126,6 +126,12 @@ public class TweetUploadService extends IntentService {
             return;
         }
         final File file = new File(path);
+
+        if(!file.canRead()){
+            fail(new TwitterException("File:" + path + " open failed: EACCES (Permission denied) "));
+            return;
+        }
+
         final String mimeType = FileUtils.getMimeType(file);
         final RequestBody media = RequestBody.create(MediaType.parse(mimeType), file);
 
